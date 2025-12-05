@@ -4,16 +4,20 @@ import com.projects.rfp.backend.dtos.AIResponse;
 import com.projects.rfp.backend.dtos.ProcurementDto;
 import com.projects.rfp.backend.entities.Procurement;
 import com.projects.rfp.backend.entities.Product;
+import com.projects.rfp.backend.utils.IdGenerator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ProcurementAdapter {
+    private final IdGenerator idGenerator;
 
     public ProcurementDto convertToDto(AIResponse aiResponse) {
-        String procurementId = "PROC-" + System.currentTimeMillis();
+        String procurementId = idGenerator.getProcurementId();
         long currentTime = System.currentTimeMillis();
 
         // Convert AI procurement to entity
@@ -35,7 +39,7 @@ public class ProcurementAdapter {
         // Convert AI products to entities
         List<Product> products = aiResponse.getProducts().stream()
                 .map(aiProduct -> Product.builder()
-                        .productId("PROD-" + System.currentTimeMillis() + "-" + Math.random())
+                        .productId(idGenerator.getProductId())
                         .procurementId(procurementId)
                         .name(aiProduct.getName())
                         .quantity(aiProduct.getQuantity() != null ? aiProduct.getQuantity() : 1)

@@ -25,17 +25,12 @@ public class Vendor {
     private String email;
     private String phone;
     private String website;
-
     @Enumerated(EnumType.STRING)
     private VendorStatus status;  // ACTIVE, INACTIVE, BLACKLISTED
-
     private Double rating;  // 0.0 to 5.0
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> contactInfo;  // address, city, country, etc.
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, String> categories;  // IT_EQUIPMENT, OFFICE_SUPPLIES, etc.
+    private Map<String, String> additionalInfo;  // IT_EQUIPMENT, OFFICE_SUPPLIES, etc.
 
     private Long createdAt;
     private Long updatedAt;

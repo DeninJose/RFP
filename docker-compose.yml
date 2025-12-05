@@ -1,0 +1,41 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: rfp-postgres
+    environment:
+      POSTGRES_DB: rfpdb
+      POSTGRES_USER: rfpuser
+      POSTGRES_PASSWORD: rfppassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rfpuser -d rfpdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/rfpdb
+      SPRING_DATASOURCE_USERNAME: rfpuser
+      SPRING_DATASOURCE_PASSWORD: rfppassword
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+
+volumes:
+  postgres_data:

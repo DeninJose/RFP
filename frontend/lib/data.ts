@@ -16,6 +16,7 @@ export const procurements: Procurement[] = [
     products: [
         {
             productId: "1",
+            procurementId: "1",
             name: "Laptop",
             quantity: 20,
             properties: {

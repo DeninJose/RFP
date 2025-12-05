@@ -1,5 +1,6 @@
 package com.projects.rfp.backend.controllers;
 
+import com.projects.rfp.backend.dtos.ProcurementDto;
 import com.projects.rfp.backend.entities.Procurement;
 import com.projects.rfp.backend.requests.ProcurementRequest;
 import com.projects.rfp.backend.services.ProcurementService;
@@ -18,8 +19,8 @@ public class ProcurementController {
     private final ProcurementService procurementService;
 
     @PostMapping
-    public void createProcurement(@RequestBody ProcurementRequest request) {
-        procurementService.createProcurement(request.getQueryText());
+    public ProcurementDto createProcurement(@RequestBody ProcurementRequest request) {
+        return procurementService.createProcurement(request.getQueryText());
     }
 
     @GetMapping
@@ -27,10 +28,13 @@ public class ProcurementController {
         return procurementService.getAllProcurements();
     }
 
+    @GetMapping("/{procurementId}")
+    public ProcurementDto getProcurementById(@PathVariable String procurementId){
+        return procurementService.getProcurementById(procurementId);
+    }
+
     @DeleteMapping
     public void deleteAllProcurements(){
-        // For testing purposes only
         procurementService.deleteAllProcurements();
     }
 }
-

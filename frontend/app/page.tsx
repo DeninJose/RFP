@@ -2,17 +2,35 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { procurementsApi } from "@/lib/api/procurements";
 
 export default function Home() {
   const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text.trim())
+    if (!text.trim()) {
       return alert("Please enter your procurement requirements.");
+    }
 
-    // TODO: call backend AI API endpoint
-    console.log("Submitting:", text);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const procurement = await procurementsApi.create({ queryText: text });
+      console.log("Created procurement:", procurement);
+      alert("Procurement created successfully!");
+      setText("");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to create procurement";
+      setError(errorMessage);
+      console.error("Error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,19 +43,27 @@ export default function Home() {
           Describe what you want to procure. Our AI will process it.
         </p>
 
+        {error && (
+          <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={onSubmit} className="mt-6">
           <textarea
             className="w-full h-56 p-4 border rounded-xl resize-vertical focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
             placeholder="Example: Need 20 laptops with 16GB RAM, 512GB SSD, delivery in 15 days..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+            disabled={loading}
           />
 
           <button
             type="submit"
-            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg transition"
+            disabled={loading}
+            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit Request
+            {loading ? "Processing..." : "Submit Request"}
           </button>
         </form>
 

@@ -1,5 +1,6 @@
 export interface Product {
   productId: string;
+  procurementId: string;
   name: string;
   quantity: number;
   properties: Record<string, string>;
@@ -15,7 +16,11 @@ export interface Procurement {
   budget: number;
   deadline: string;
   properties: Record<string, string>;
-  products: Product[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ProcurementDto {
+    procurement: Procurement;
+    products: Product[];
 }

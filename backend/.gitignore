@@ -30,10 +30,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Application Properties with Secrets ###
-application.properties
-application-*.properties
-
-# Exception: allow example/template files
-!application.properties.example

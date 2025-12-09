@@ -17,6 +17,7 @@ public class VendorAdapter {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .website(request.getWebsite())
+                .categories(request.getCategories())
                 .status(request.getStatus())
                 .rating(request.getRating())
                 .additionalInfo(request.getAdditionalInfo())

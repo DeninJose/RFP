@@ -1,13 +1,14 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import Link from "next/link";
 import { procurementsApi } from "@/lib/api/procurements";
-import { ProcurementDto } from "@/lib/types";
+import { ProcurementDto } from "@/lib/types/procurement";
 import ProductCard from "@/components/ProductCard";
 import BackButton from "@/components/BackButton";
 
 interface Params {
-  id: string;
+  procurementId: string;
 }
 
 export default function ProcurementDetailPage({
@@ -15,7 +16,7 @@ export default function ProcurementDetailPage({
 }: {
   params: Promise<Params>;
 }) {
-  const { id } = use(params);
+  const { procurementId } = use(params);
   const [procurementDto, setProcurementDto] = useState<ProcurementDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +25,7 @@ export default function ProcurementDetailPage({
   useEffect(() => {
     const fetchProcurement = async () => {
       try {
-        const data = await procurementsApi.getById(id);
+        const data = await procurementsApi.getById(procurementId);
         setProcurementDto(data);
       } catch (err) {
         const errorMessage =
@@ -37,7 +38,7 @@ export default function ProcurementDetailPage({
     };
 
     fetchProcurement();
-  }, [id]);
+  }, [procurementId]);
 
   if (loading) {
     return (
@@ -110,6 +111,12 @@ export default function ProcurementDetailPage({
             )}
           </div>
         </div>
+
+        <Link href={`/procurements/${procurementId}/vendors`}>
+          <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg transition">
+            View Vendors
+          </button>
+        </Link>
       </div>
     </div>
   );

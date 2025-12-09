@@ -1,5 +1,5 @@
 import { api } from './client';
-import { Procurement, ProcurementDto } from '../types';
+import { Procurement, ProcurementDto } from '../types/procurement';
 
 const PROCUREMENTS_URL = '/api/v1/procurements';
 

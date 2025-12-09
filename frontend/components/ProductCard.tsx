@@ -1,4 +1,4 @@
-import { Product } from "@/lib/types";
+import { Product } from "@/lib/types/procurement";
 
 interface ProductCardProps {
   product: Product;

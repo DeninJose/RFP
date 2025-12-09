@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -17,6 +18,7 @@ public class CreateVendorRequest {
     private String email;
     private String phone;
     private String website;
+    private List<String> categories;
     private VendorStatus status;
     private Double rating;
     private Map<String, String> additionalInfo;

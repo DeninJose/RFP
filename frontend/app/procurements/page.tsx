@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { procurementsApi } from "@/lib/api/procurements";
-import { Procurement } from "@/lib/types";
+import { Procurement } from "@/lib/types/procurement";
 import BackButton from "@/components/BackButton";
 
 export default function ProcurementsPage() {
